@@ -1,0 +1,12 @@
+{
+  "name": "js1k2020",
+  "private": true,
+  "scripts": {
+    "pack": "node build.js"
+  },
+  "devDependencies": {
+    "lodash": "^4.17.15",
+    "regpack": "Siorki/RegPack",
+    "shelljs": "0.8.3"
+  }
+}
