@@ -34,10 +34,20 @@ const extractAndMinifyShaders = js => {
         shaders[i] = fs.readFileSync('tmp_out.glsl', 'utf8');
     }
 
+    return { js, shaders };
+}
+
+const reinsertShaders = (js, shaders) => {
     for (let i = 0; i < shaders.length; ++i) {
         js = js.replace(new RegExp('__shader'+i, 'g'), "'"+shaders[i]+"'");
     }
+    return js;
+};
 
+const removeWhitespace = js => {
+    js = js.replace(/[ \t\r\n]+/g, '');
+    js = js.replace(/newFloat32Array/g, 'new Float32Array'); 
+    // TODO handle whitespace better
     return js;
 }
 
@@ -46,11 +56,21 @@ const main = () => {
 
     js = minifyPrefixedIdentifiers('\\$', js);
     js = minifyPrefixedIdentifiers('x_', js);
-    js = extractAndMinifyShaders(js);
+    const shaderMinResult = extractAndMinifyShaders(js);
+    js = shaderMinResult.js;
+    js = removeWhitespace(js);
+    js = reinsertShaders(js, shaderMinResult.shaders);
 
-    fs.writeFileSync('tmp.js', js);
+    fs.writeFileSync('tmp_in.js', js);
 
-    shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g tmp.js > packed.js');
+    shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g tmp_in.js > tmp_out.js');
+
+    const packedJS = fs.readFileSync('tmp_out.js', 'utf8');
+    const shimHTML = fs.readFileSync('src/shim.html', 'utf8');
+
+    fs.writeFileSync('index.html', shimHTML.replace('__CODE__', packedJS));
+
+    shell.rm('-rf', 'tmp*.*');
 }
 
 main();

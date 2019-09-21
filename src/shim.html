@@ -27,36 +27,7 @@
     </header>
     <script type="demo">
 
-
-b = 'attribute vec2 a;varying vec2 b;void main(){gl_Position=vec4(a,0,1),b=a.xy*.5+.5;}';
-
-a = 'varying highp vec2 b;void main(){gl_FragColor=vec4(b,0,1);}';
-
-d = g.createShader(g.VERTEX_SHADER);
-g.shaderSource(d, b);
-g.compileShader(d);
-
-e = g.createShader(g.FRAGMENT_SHADER);
-g.shaderSource(e, a);
-g.compileShader(e);
-
-f = g.createProgram();
-g.attachShader(f, d);
-g.attachShader(f, e);
-g.linkProgram(f);
-
-g.useProgram(f);
-
-c = g.createBuffer();
-g.bindBuffer(g.ARRAY_BUFFER, c);
-g.bufferData(g.ARRAY_BUFFER, new Float32Array([ -1,1,-1,-.5,1,-1,1,-1,1,1,-1,1 ]), g.STATIC_DRAW);
-
-h = g.getAttribLocation(f, 'a');
-g.enableVertexAttribArray(h);
-g.vertexAttribPointer(h, 2, g.FLOAT, false, 0, 0);
-
-g.drawArrays(g.TRIANGLES, 0, 6);
-
+__CODE__
     </script>
     <script>
       (function(){var m=document,b=m.getElementsByTagName("header")[0],h=b.firstChild,n=m.getElementsByClassName("p")[0],f=m

@@ -1,4 +1,2 @@
 node_modules
-dist/
-packed.js
-tmp.js
+index.html
