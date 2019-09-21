@@ -5,7 +5,7 @@ $vertShaderSource = __shader`
     void main()
     {
         gl_Position = vec4(x_position, 0, 1);
-        v_uv = x_position.xy*0.5 + 0.5;
+        x_uv = x_position.xy*0.5 + 0.5;
     }
 `;
 
@@ -35,7 +35,7 @@ g.useProgram($shader);
 
 $vertexBuffer = g.createBuffer();
 g.bindBuffer(g.ARRAY_BUFFER, $vertexBuffer);
-g.bufferData(g.ARRAY_BUFFER, new Float32Array([ -1,.5,-1,-1,1,-1,1,-1,1,1,-1,1 ]), g.STATIC_DRAW);
+g.bufferData(g.ARRAY_BUFFER, new Float32Array([ -1,1,-1,-.5,1,-1,1,-1,1,1,-1,1 ]), g.STATIC_DRAW);
 
 $posLoc = g.getAttribLocation($shader, 'x_position');
 g.enableVertexAttribArray($posLoc);
