@@ -61,6 +61,8 @@ const main = () => {
     js = removeWhitespace(js);
     js = reinsertShaders(js, shaderMinResult.shaders);
 
+    console.log(js);
+
     fs.writeFileSync('tmp_in.js', js);
 
     shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g tmp_in.js > tmp_out.js');
