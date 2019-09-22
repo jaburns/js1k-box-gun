@@ -31,41 +31,45 @@ $tris =[
     7,3,2
 ];
 
-$attachShader = (a, b) => (
-    $x = g.createShader(a),
-    g.shaderSource($x, b),
-    g.compileShader($x),
-    g.attachShader($shader, $x)
-);
+$shaderSource = __shader('shader.vert');
+$newShader = g.createShader(g.VERTEX_SHADER);
+g.shaderSource($newShader, $shaderSource);
+g.compileShader($newShader);
+g.attachShader($shader, $newShader);
 
-$attachShader(g.VERTEX_SHADER, __shader`
-    attribute vec2 x_position;
-    varying vec2 x_uv;
-
-    void main()
-    {
-        gl_Position = vec4(x_position, 0, 1);
-        x_uv = x_position.xy*0.5 + 0.5;
-    }
-`);
-
-$attachShader(g.FRAGMENT_SHADER, __shader`
-    varying highp vec2 x_uv;
-
-    void main()
-    {
-        gl_FragColor = vec4(x_uv, 0, 1);
-    }
-`);
+$shaderSource = __shader('shader.frag');
+$newShader = g.createShader(g.FRAGMENT_SHADER);
+g.shaderSource($newShader, $shaderSource);
+g.compileShader($newShader);
+g.attachShader($shader, $newShader);
 
 g.linkProgram($shader);
 g.useProgram($shader);
 
+g.enable(g.DEPTH_TEST);
+
 $vertexBuffer = g.createBuffer();
-g.bindBuffer(g.ARRAY_BUFFER, $vertexBuffer);
-g.bufferData(g.ARRAY_BUFFER, new Float32Array([ -1,1,-1,-.5,1,-1,1,-1,1,1,-1,1 ]), g.STATIC_DRAW);
+$indexBuffer = g.createBuffer();
 
-g.enableVertexAttribArray(0);
-g.vertexAttribPointer(0, 2, g.FLOAT, false, 0, 0);
+$time = 0;
+setInterval(_ => {
+    $time += .01;
 
-g.drawArrays(g.TRIANGLES, 0, 6);
+    g.clearColor(.2,.2,.2,1);
+//  g.clear(g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT);
+    g.clear(16640);
+
+    $verts[18] = -.5+.5*Math.sin($time);
+    $verts[19] =  .5+.5*Math.cos($time);
+
+    g.bindBuffer($bufferKind = g.ARRAY_BUFFER, $vertexBuffer);
+    g.bufferData($bufferKind, Float32Array.from($verts), g.STATIC_DRAW);
+    g.enableVertexAttribArray(0);
+    g.vertexAttribPointer(0, 3, g.FLOAT, false, 0, 0);
+
+    g.uniform3f(g.getUniformLocation($shader, 'x_aspect'), a.width/a.height,0,0,0);
+
+    g.bindBuffer($bufferKind = g.ELEMENT_ARRAY_BUFFER, $indexBuffer);
+    g.bufferData($bufferKind, Uint16Array.from($tris), g.STATIC_DRAW);
+    g.drawElements(g.TRIANGLES, $tris.length, g.UNSIGNED_SHORT, 0);
+}, 5);
