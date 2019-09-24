@@ -3,12 +3,11 @@ const fs = require('fs');
 const _ = require('lodash');
 const meta = require('./src/meta.js');
 
-const FRAG_PREFIX = '#extension GL_OES_standard_derivatives:enable\\nprecision highp float;';
+const FRAG_PREFIX = '#extension GL_OES_standard_derivatives:enable\\n'//precision highp float;';
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
-    .filter(x => x !== 'g' && x !== 'a')
-    .concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
+    .filter(x => x !== 'g' && x !== 'a');
 
 const stripComments = js => js
     .replace(/\/\*[^\*]*\*\//g, '')
