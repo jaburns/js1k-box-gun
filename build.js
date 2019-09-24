@@ -3,18 +3,16 @@ const fs = require('fs');
 const _ = require('lodash');
 const meta = require('./src/meta.js');
 
-const FRAG_PREFIX = 'precision highp float;';
+const FRAG_PREFIX = '#extension GL_OES_standard_derivatives:enable\\nprecision highp float;';
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
-    .filter(x => x !== 'g' && x !== 'a');
+    .filter(x => x !== 'g' && x !== 'a')
+    .concat('ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split(''));
 
 const stripComments = js => js
-    .replace(/\r/g, '')
-    .split('\n')
-    .map(x => x.trim())
-    .filter(x => !x.startsWith('//'))
-    .join('\n');
+    .replace(/\/\*[^\*]*\*\//g, '')
+    .replace(/\/\/.*/g, '');
 
 const minifyPrefixedIdentifiers = (prefix, js) => {
     const vars = _.uniq(js
@@ -62,8 +60,9 @@ const insertShaders = js => {
     return js;
 };
 
-const removeWhitespace = js =>
-    js.replace(/[ \t\r\n]+/g, '');
+const removeWhitespace = js => js
+    .replace(/[ \t\r\n]+/g, '')
+    .replace(/return/g, 'return ');
 
 const main = () => {
     let js = fs.readFileSync('src/main.js', 'utf8');
@@ -90,5 +89,13 @@ const main = () => {
 
     shell.rm('-rf', 'tmp*.*');
 }
+
+// TODO parse RegPack output to get hashing algorithm used
+// Reverse the packing
+// Wrap result in with(g){ }
+// Re-run RegPack with gl hashing disabled and compare size
+
+
+// TODO Message js1k about the shim not adding the gl extensions correctly.
 
 main();

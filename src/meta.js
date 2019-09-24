@@ -3,8 +3,8 @@ module.exports = {
         const far = 100;
         const near = 0.1;
         const x = 0;
-        const y = -2;
-        const z = -5;
+        const y = -5;
+        const z = -20;
 
         const componentX = x !== 0 ? '1. / x_aspect.x *'+x : '0';
 
