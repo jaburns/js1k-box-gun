@@ -1,9 +1,13 @@
+const SRC_DIR = 'src';
+
 const shell = require('shelljs');
 const fs = require('fs');
 const _ = require('lodash');
-const meta = require('./src/meta.js');
+const meta = require('./'+SRC_DIR+'/meta.js');
 
-const FRAG_PREFIX = '#extension GL_OES_standard_derivatives:enable\\n'//precision highp float;';
+const FRAG_PREFIX = SRC_DIR === 'raymarch_src'
+    ? 'precision highp float;'
+    : '#extension GL_OES_standard_derivatives:enable\\n';
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
@@ -47,7 +51,7 @@ const getMinifiedShader = path => {
 const insertShaders = js => {
     while (js.indexOf('__shader(') >= 0) {
         const match = js.match(/__shader\(['"]([^'"]+)['"]\)/);
-        let shader = getMinifiedShader('src/' + match[1]);
+        let shader = getMinifiedShader(SRC_DIR + '/' + match[1]);
 
         if (match[1].endsWith('frag')) {
             shader = FRAG_PREFIX + shader;
@@ -65,7 +69,7 @@ const removeWhitespace = js => js
     .replace(/newDate/g, 'new Date');
 
 const main = () => {
-    let js = fs.readFileSync('src/main.js', 'utf8');
+    let js = fs.readFileSync(SRC_DIR + '/main.js', 'utf8');
 
     js = replaceMetaExprs(js);
     js = stripComments(js);
@@ -83,7 +87,7 @@ const main = () => {
     console.log('');
 
     const packedJS = fs.readFileSync('tmp_out.js', 'utf8');
-    const shimHTML = fs.readFileSync('src/shim.html', 'utf8');
+    const shimHTML = fs.readFileSync(SRC_DIR + '/shim.html', 'utf8');
 
     fs.writeFileSync('index.html', shimHTML.replace('__CODE__', packedJS));
 
