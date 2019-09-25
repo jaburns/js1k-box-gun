@@ -61,7 +61,8 @@ const insertShaders = js => {
 
 const removeWhitespace = js => js
     .replace(/[ \t\r\n]+/g, '')
-    .replace(/return/g, 'return ');
+    .replace(/return/g, 'return ')
+    .replace(/newDate/g, 'new Date');
 
 const main = () => {
     let js = fs.readFileSync('src/main.js', 'utf8');

@@ -26,3 +26,6 @@ module.exports = {
         return `mat4(${matArgs})`;
     })()
 };
+
+
+// TODO: instead of inlining the whole matrix with zeros and all, try expanding the mat4 * vec4 expression
