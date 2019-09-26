@@ -21,8 +21,8 @@ $constraints = [];
 for ($c = 12; $c < 3612; $c+=24)  // $verts.length = 3612
     for ($b = $c; $b < $c+21; $b+=3)
         for ($a = $b+3; $a < $c+24; $a+=3)
-            $constraints.push([$b,$a, DIST]),
-            $constraints.push([$a,$b, DIST]);
+            $constraints.push([$b, $a, DIST]),
+            $constraints.push([$a, $b, DIST]);
 
 
 // ===== Shader compilation and WebGL setup =====
@@ -59,12 +59,14 @@ setInterval(_ => (
 
     ++$time>99 && (
 
-        // Vertex position updates
+        // Vertex position and velocity updates
         $verts.map(($a,$b) => (
             $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-4),
             $oldVerts[$b] = $a,
 
+            // If the vertex is through the floor
             $b%3^1 || $verts[$b] < 0 && (
+                // Restore position and reflect velocity
                 $verts[$b] = 0,
                 $oldVerts[$b] *= $x = -1,
 
@@ -92,7 +94,7 @@ setInterval(_ => (
         0, 3, g.FLOAT,
         g.enableVertexAttribArray(g.useProgram($shader)), // false,
         g.bindBuffer($a, g.createBuffer()), // 0, 
-        g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0,  // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
+        g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
     g.uniform1f(g.getUniformLocation($shader, 'x_aspect'), a.width/a.height),
