@@ -111,7 +111,7 @@ const main = () => {
     fs.writeFileSync('tmp_in.js', js);
 
     console.log('Initial packing step:');
-    shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g tmp_in.js > tmp_out.js');
+    shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g,a tmp_in.js > tmp_out.js');
     console.log('');
 
     let packedJS = fs.readFileSync('tmp_out.js', 'utf8');
@@ -123,13 +123,13 @@ const main = () => {
 
     if (DO_SECOND_PASS) {
         packedJS = afterPackingTransform(unpackedJS);
-        fs.writeFileSync('tmp_in.js', finalJSbeforePack);
+        fs.writeFileSync('tmp_in.js', packedJS);
 
-        console.log(finalJSbeforePack);
+        console.log(packedJS);
         console.log('');
 
         console.log('Second packing step:');
-        shell.exec('regpack --varsNotReassigned g tmp_in.js > tmp_out.js');
+        shell.exec('regpack --varsNotReassigned g,a tmp_in.js > tmp_out.js');
         console.log('');
 
         packedJS = fs.readFileSync('tmp_out.js', 'utf8');

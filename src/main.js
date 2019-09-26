@@ -66,12 +66,11 @@ setInterval(_ => (
 
             ($b-1) % 3 || $verts[$b] < 0 && (
                 $verts[$b] = 0,
-                $oldVerts[$b] *= -1,
+                $oldVerts[$b] *= $x = -1,
 
                 // Apply friction along xz 
-                $x = -1,
                 $oldVerts[$b+$x] = .8*($oldVerts[$b+$x] - $verts[$b+$x]) + $verts[$b+$x],
-                $x =  1,
+                $x = 1,
                 $oldVerts[$b+$x] = .8*($oldVerts[$b+$x] - $verts[$b+$x]) + $verts[$b+$x]
             )
         )),
