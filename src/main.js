@@ -64,7 +64,7 @@ setInterval(_ => (
             $verts[$b] += $a - $oldVerts[$b] - (($b-1)%3 ? 0 : 2e-4),
             $oldVerts[$b] = $a,
 
-            ($b-1) % 3 || $verts[$b] < 0 && (
+            ($b-1)%3 || $verts[$b] < 0 && (
                 $verts[$b] = 0,
                 $oldVerts[$b] *= $x = -1,
 
@@ -81,13 +81,13 @@ setInterval(_ => (
             $x = $a, $y = .5,
             [0,1,2].map($d =>
                 $verts[$x+$d] =
-                    ($verts[$a+$d] + $verts[$b+$d]) / 2 +
+                    ($verts[$a+$d] + $verts[$b+$d]) * .5 +
                     ($verts[$a+$d] - $verts[$b+$d]) * $c * $y / DIST),
 
             $x = $b, $y = -.5,
             [0,1,2].map($d =>
                 $verts[$x+$d] =
-                    ($verts[$a+$d] + $verts[$b+$d]) / 2 +
+                    ($verts[$a+$d] + $verts[$b+$d]) * .5 +
                     ($verts[$a+$d] - $verts[$b+$d]) * $c * $y / DIST)
         ))
     ),
