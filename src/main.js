@@ -1,6 +1,5 @@
 // ===== Geometry and constraints initialization =====
-
-$numList = $a => $a[0].split('').map($a=>$a|0);
+$numList = $a => $a[0].split('').map($a=>$a|0),
 
 $tris = $numList`012123`,
 $verts = $numList`101201102202`.map($a => $a&&$a*60-90);
@@ -16,14 +15,6 @@ __defMacro('DIST',
     [0,1,2].map($d => $xc += ($xe=$verts[$a+$d]-$verts[$b+$d])*$xe),
     Math.sqrt($xc))
 )
-
-// $dist = ($a,$b) => Math.sqrt(
-//     $y=0, $d=0,
-//     $x=$verts[$a+$d] - $verts[$b+$d++], $y += $x*$x,
-//     $x=$verts[$a+$d] - $verts[$b+$d++], $y += $x*$x,
-//     $x=$verts[$a+$d] - $verts[$b+$d++], $y += $x*$x,
-//     $y
-// ),
 
 $constraints = [];
 for ($c = 12; $c < 2388; $c+=24)  // $verts.length = 2388
@@ -57,7 +48,6 @@ g.attachShader($shader, $b),
 //      console.log(log);
 //  }
 
-
 g.linkProgram($shader),
 
 // ===== Main loop =====
@@ -70,7 +60,7 @@ setInterval(_ => (
 
     // Vertex position updates
 
-        $verts.forEach(($a,$b) => (
+        $verts.map(($a,$b) => (
             $verts[$b] += $a - $oldVerts[$b] - (($b-1)%3 ? 0 : 2e-4),
             $oldVerts[$b] = $a,
 
@@ -88,7 +78,7 @@ setInterval(_ => (
 
         // Apply all distance constraints
 
-        $constraints.forEach(([$a,$b,$c]) => (
+        $constraints.map(([$a,$b,$c]) => (
             $x = $a, $y = .5,
             [0,1,2].map($d =>
                 $verts[$x+$d] =
