@@ -2,6 +2,16 @@ attribute vec3 x_position;
 uniform float x_aspect;
 varying highp vec3 x_worldPos;
 
+/*
+const far = 100, near = 0.1, x = 0, y = -5, z = -20;
+projMatrix = [
+    1 / aspect, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, (far + near) / (near - far), -1,
+    x / aspect, y, (2. * far * near) / (near - far) + (far + near) / (near - far) * z, -z
+]
+*/
+
 void main()
 {
     gl_Position = vec4(
@@ -10,6 +20,5 @@ void main()
         19.84 - x_position.z,
         20. - x_position.z
     );
-    //gl_Position = __metaExpr('vpMatrix') * vec4(x_position, 1); 
     x_worldPos = x_position;
 }
