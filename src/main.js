@@ -1,4 +1,5 @@
 // ===== Geometry and constraints initialization =====
+
 $numList = $a => $a[0].split('').map($a=>$a|0),
 
 $tris = $numList`012123`,
@@ -20,7 +21,8 @@ $constraints = [];
 for ($c = 12; $c < 3612; $c+=24)  // $verts.length = 3612
     for ($b = $c; $b < $c+21; $b+=3)
         for ($a = $b+3; $a < $c+24; $a+=3)
-            $constraints.push([$b,$a, DIST]);
+            $constraints.push([$b,$a, DIST]),
+            $constraints.push([$a,$b, DIST]);
 
 
 // ===== Shader compilation and WebGL setup =====
@@ -57,8 +59,7 @@ setInterval(_ => (
 
     ++$time>99 && (
 
-    // Vertex position updates
-
+        // Vertex position updates
         $verts.map(($a,$b) => (
             $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-4),
             $oldVerts[$b] = $a,
@@ -69,29 +70,19 @@ setInterval(_ => (
 
                 // Apply friction along xz 
                 $oldVerts[$b+$x] = .8*($oldVerts[$b+$x] - $verts[$b+$x]) + $verts[$b+$x],
-                $x = 1,
+                $x *= -1,
                 $oldVerts[$b+$x] = .8*($oldVerts[$b+$x] - $verts[$b+$x]) + $verts[$b+$x]
             )
         )),
 
         // Apply all distance constraints
-
-        $constraints.map(([$a,$b,$c]) => (
-            $x = $a, $y = .5,
+        $constraints.map(([$a,$b,$c]) =>
             [0,1,2].map($d =>
-                $verts[$x+$d] =
+                $verts[$a+$d] =
                     ($verts[$a+$d] + $verts[$b+$d]) * .5 +
-                    ($verts[$a+$d] - $verts[$b+$d]) * $c * $y / DIST),
-
-            $x = $b, $y = -.5,
-            [0,1,2].map($d =>
-                $verts[$x+$d] =
-                    ($verts[$a+$d] + $verts[$b+$d]) * .5 +
-                    ($verts[$a+$d] - $verts[$b+$d]) * $c * $y / DIST)
-        ))
+                    ($verts[$a+$d] - $verts[$b+$d]) * .5 * $c / DIST),
+        )
     ),
-
-    // Draw
 
     g.clear(16640), // g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT
 
