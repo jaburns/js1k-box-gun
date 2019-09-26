@@ -49,10 +49,9 @@ g.attachShader($shader, $b),
 //  }
 
 g.linkProgram($shader),
+g.clearColor($time=0,0,0,1),
 
 // ===== Main loop =====
-
-$time = 0,
 
 setInterval(_ => (
 
@@ -61,10 +60,10 @@ setInterval(_ => (
     // Vertex position updates
 
         $verts.map(($a,$b) => (
-            $verts[$b] += $a - $oldVerts[$b] - (($b-1)%3 ? 0 : 2e-4),
+            $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-4),
             $oldVerts[$b] = $a,
 
-            ($b-1)%3 || $verts[$b] < 0 && (
+            $b%3^1 || $verts[$b] < 0 && (
                 $verts[$b] = 0,
                 $oldVerts[$b] *= $x = -1,
 
@@ -94,7 +93,6 @@ setInterval(_ => (
 
     // Draw
 
-    g.clearColor(0,0,0,1),
     g.clear(16640), // g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT
 
     $a = g.ARRAY_BUFFER,
