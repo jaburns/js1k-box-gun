@@ -4,7 +4,7 @@ $numList = $a => $a[0].split('').map($a=>$a|0),
 $tris = $numList`012123`,
 $verts = $numList`101201102202`.map($a => $a&&$a*60-90);
 
-for ($a = 0; $a++ < 99;)
+for ($a = 0; $a++ < 150;)
     $verts = $verts.concat($numList`080180090190081181091191`),
     $tris = $tris.concat($numList`102123456657537513062046405015267732`.map($b => $b + 8*$a + 4));
 
@@ -17,7 +17,7 @@ __defMacro('DIST',
 )
 
 $constraints = [];
-for ($c = 12; $c < 2388; $c+=24)  // $verts.length = 2388
+for ($c = 12; $c < 3612; $c+=24)  // $verts.length = 3612
     for ($b = $c; $b < $c+21; $b+=3)
         for ($a = $b+3; $a < $c+24; $a+=3)
             $constraints.push([$b,$a, DIST]);
@@ -110,6 +110,6 @@ setInterval(_ => (
 
     g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
     g.bufferData($a, Int16Array.from($tris), $a + 81),
-    g.drawElements(g.TRIANGLES, 3570, g.UNSIGNED_SHORT, 0) // $tris.length = 3570
+    g.drawElements(g.TRIANGLES, 5406, g.UNSIGNED_SHORT, 0) // $tris.length = 5406
 
 ), 5)

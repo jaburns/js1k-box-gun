@@ -4,7 +4,7 @@ const _ = require('lodash');
 
 const SRC_DIR = 'src';
 const DO_SECOND_PASS = false;
-const FRAG_PREFIX = '#extension GL_OES_standard_derivatives:enable\\n';
+const FRAG_PREFIX = ''; // '#extension GL_OES_standard_derivatives:enable\\n';
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
@@ -139,7 +139,12 @@ const main = () => {
     }
 
     const shimHTML = fs.readFileSync(SRC_DIR + '/shim.html', 'utf8');
-    fs.writeFileSync('index.html', shimHTML.replace('__CODE__', packedJS));
+
+    fs.writeFileSync('index.html',
+        shimHTML.replace(/__CODE__[^]*/,'')
+        + packedJS
+        + shimHTML.replace(/[^_]*__CODE__/,'')
+    );
 
     shell.rm('-rf', 'tmp*.*');
 }
