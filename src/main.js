@@ -5,7 +5,7 @@ $numList = $a => $a[0].split('').map($a=>$a|0),
 $tris = $numList`012123`,
 $verts = $numList`101201102202`.map($a => $a&&$a*60-90);
 
-for ($a = 0; $a++ < 150;)
+for ($a = 0; $a < 150; $a++)
     $verts = $verts.concat($numList`080180090190081181091191`),
     $tris = $tris.concat($numList`102123456657537513062046405015267732`.map($b => $b + 8*$a + 4));
 
