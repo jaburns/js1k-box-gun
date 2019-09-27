@@ -1,7 +1,7 @@
 // ===== Geometry and constraints initialization =====
 
 $tris = [...'012123'],
-$verts = [...'404804408808'].map($a => $a|0&&$a*99-594);
+$verts = [...'040840048848'].map($a => $a*99-396);
 
 for ($a = 0; $a < 150; $a++)
     $verts = $verts.concat([...'080180090190081181091191'].map($a => $a|0)),
@@ -10,9 +10,7 @@ for ($a = 0; $a < 150; $a++)
 $oldVerts = $verts.map(($a,$b) => $b>11 ? $a + .1*Math.random()-.05 : $a);
 
 __defMacro('DIST',
-    ($xc = 0,
-    [0,1,2].map($d => $xc += ($xe=$verts[$a+$d]-$verts[$b+$d])*$xe),
-    Math.sqrt($xc))
+    Math.hypot(...[0,1,2].map($d => $verts[$a+$d]-$verts[$b+$d]))
 )
 
 $constraints = [];
