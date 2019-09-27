@@ -94,7 +94,7 @@ setInterval($a => (
         g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
-    g.uniform1f(g.getUniformLocation($shader, 'g'), a.width/a.height),
+    g.uniform2f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<99?$time:99),
 
     g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
     g.bufferData($a, Int16Array.from($tris), $a + 81),
