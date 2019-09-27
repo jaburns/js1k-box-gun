@@ -13,7 +13,7 @@ for ($a = 0; $a < 150; $a++)
     $tris = $tris.concat([...'102123456657537513062046405015267732'].map($b => ($b|0) + 8*$a + 4));
 
 for ($b = $c = 12; $c < 3612; ($b += 3) >= $c + 21 && ($b = $c += 24)) // $verts.length = 3612
-    for ($a = $b+3; $a < $c+24; $a+=3)
+    for ($a = $b + 3; $a < $c + 24; $a += 3)
         $constraints.push([$b, $a, DIST]),
         $constraints.push([$a, $b, DIST]);
 
@@ -29,20 +29,14 @@ $b = g.createShader(g.VERTEX_SHADER),
 g.shaderSource($b, $a),
 g.compileShader($b),
 g.attachShader($shader, $b),
-//  log = g.getShaderInfoLog($b);
-//  if (log === null || log.length > 0 && log.indexOf('ERROR') >= 0) {
-//      console.log(log);
-//  }
+//console.log(g.getShaderInfoLog($b));
 
 $a = __shader('shader.frag'),
 $b = g.createShader(g.FRAGMENT_SHADER),
 g.shaderSource($b, $a),
 g.compileShader($b),
 g.attachShader($shader, $b),
-//  log = g.getShaderInfoLog($b);
-//  if (log === null || log.length > 0 && log.indexOf('ERROR') >= 0) {
-//      console.log(log);
-//  }
+//console.log(g.getShaderInfoLog($b));
 
 g.linkProgram($shader),
 g.clearColor($time=0,0,0,1),
