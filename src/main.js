@@ -6,16 +6,21 @@ __defMacro('DIST',
 
 $constraints = [],
 $tris = [...'012123'],
-$verts = [...'040840048848'].map($a => $a*99-396);
+$verts = [...'040840048848'].map($c => $c*99-396);
 
 for ($a = 0; $a < 150; $a++)
-    $verts = $verts.concat([...'080180090190081181091191'].map($a => $a|0)),
-    $tris = $tris.concat([...'102123456657537513062046405015267732'].map($b => ($b|0) + 8*$a + 4));
+    $verts = $verts.concat([...'080180090190081181091191'].map($c => $c|0)),
+    $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ($c|0) + 8*$a + 4));
 
-for ($b = $c = 12; $c < 3612; ($b += 3) >= $c + 21 && ($b = $c += 24)) // $verts.length = 3612
-    for ($a = $b + 3; $a < $c + 24; $a += 3)
+for (
+    $a = $b = $c = 12;
+    $c < 3612; // $verts.length = 3612
+    ($a += 3) >= $c + 24 && ($a = $b += 3) >= $c + 24 && ($b = $c += 24)
+)
+    $a ^ $b && (
         $constraints.push([$b, $a, DIST]),
-        $constraints.push([$a, $b, DIST]);
+        $constraints.push([$a, $b, DIST])
+    );
 
 $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .2*Math.random()-.1 : $a),
 
