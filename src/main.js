@@ -1,5 +1,10 @@
 // ===== Geometry and constraints initialization =====
 
+__defMacro('DIST',
+    Math.hypot(...[0,1,2].map($c => $verts[$a+$c]-$verts[$b+$c]))
+)
+
+$constraints = [],
 $tris = [...'012123'],
 $verts = [...'040840048848'].map($a => $a*99-396);
 
@@ -7,19 +12,12 @@ for ($a = 0; $a < 150; $a++)
     $verts = $verts.concat([...'080180090190081181091191'].map($a => $a|0)),
     $tris = $tris.concat([...'102123456657537513062046405015267732'].map($b => ($b|0) + 8*$a + 4));
 
-$oldVerts = $verts.map(($a,$b) => $b>11 ? $a + .1*Math.random()-.05 : $a);
+for ($b = $c = 12; $c < 3612; ($b += 3) >= $c + 21 && ($b = $c += 24)) // $verts.length = 3612
+    for ($a = $b+3; $a < $c+24; $a+=3)
+        $constraints.push([$b, $a, DIST]),
+        $constraints.push([$a, $b, DIST]);
 
-__defMacro('DIST',
-    Math.hypot(...[0,1,2].map($c => $verts[$a+$c]-$verts[$b+$c]))
-)
-
-$constraints = [];
-for ($c = 12; $c < 3612; $c+=24)  // $verts.length = 3612
-    for ($b = $c; $b < $c+21; $b+=3)
-        for ($a = $b+3; $a < $c+24; $a+=3)
-            $constraints.push([$b, $a, DIST]),
-            $constraints.push([$a, $b, DIST]);
-
+$oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .2*Math.random()-.1 : $a),
 
 // ===== Shader compilation and WebGL setup =====
 
