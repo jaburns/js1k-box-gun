@@ -8,19 +8,20 @@ $constraints = [],
 $tris = [...'012123'],
 $verts = [...'040840048848'].map($c => $c*99-396);
 
-for ($a = 0; $a < 150; $a++)
-    $verts = $verts.concat([...'080180090190081181091191'].map($c => $c|0)),
-    $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ($c|0) + 8*$a + 4));
-
 for (
-    $a = $b = $c = 12;
+    $a = $b = $c = $d = 12;
     $c < 3612; // $verts.length = 3612
     ($a += 3) >= $c + 24 && ($a = $b += 3) >= $c + 24 && ($b = $c += 24)
 )
+    $d < 1220 && ( // 150 (cube count) * 8 (verts per cube) + 20 (iteration offset)
+        $verts = $verts.concat([...'080180090190081181091191'].map($c => ~~$c)),
+        $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 16))
+    ),
     $a ^ $b && (
         $constraints.push([$b, $a, DIST]),
         $constraints.push([$a, $b, DIST])
-    );
+    ),
+    $d += 8;
 
 $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .2*Math.random()-.1 : $a),
 
