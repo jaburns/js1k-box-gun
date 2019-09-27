@@ -140,7 +140,7 @@ const main = () => {
 
     const shimHTML = fs.readFileSync(SRC_DIR + '/shim.html', 'utf8');
 
-    fs.writeFileSync('index.html',
+    fs.writeFileSync('docs/index.html',
         shimHTML.replace(/__CODE__[^]*/,'')
         + packedJS
         + shimHTML.replace(/[^_]*__CODE__/,'')

@@ -10,7 +10,7 @@ for ($a = 0; $a < 150; $a++)
 $oldVerts = $verts.map(($a,$b) => $b>11 ? $a + .1*Math.random()-.05 : $a);
 
 __defMacro('DIST',
-    Math.hypot(...[0,1,2].map($d => $verts[$a+$d]-$verts[$b+$d]))
+    Math.hypot(...[0,1,2].map($c => $verts[$a+$c]-$verts[$b+$c]))
 )
 
 $constraints = [];
@@ -53,7 +53,7 @@ g.clearColor($time=0,0,0,1),
 
 setInterval(_ => (
 
-    ++$time>99 && (
+    ++$time>99 && 
 
         // Vertex position and velocity updates
         $verts.map(($a,$b) => (
@@ -64,23 +64,25 @@ setInterval(_ => (
             $b%3^1 || $verts[$b] < 0 && (
                 // Restore position and reflect velocity
                 $verts[$b] = 0,
-                $oldVerts[$b] *= $x = -1,
+                $oldVerts[$b] *= $c = -1,
 
                 // Apply friction along xz 
-                $oldVerts[$b+$x] = .8*($oldVerts[$b+$x] - $verts[$b+$x]) + $verts[$b+$x],
-                $x *= -1,
-                $oldVerts[$b+$x] = .8*($oldVerts[$b+$x] - $verts[$b+$x]) + $verts[$b+$x]
+                $oldVerts[$b+$c] = .8*($oldVerts[$b+$c] - $verts[$b+$c]) + $verts[$b+$c],
+                $c *= -1,
+                $oldVerts[$b+$c] = .8*($oldVerts[$b+$c] - $verts[$b+$c]) + $verts[$b+$c]
             )
-        )),
+        ))
+
+        &&
 
         // Apply all distance constraints
-        $constraints.map(([$a,$b,$c]) =>
-            [0,1,2].map($d =>
-                $verts[$a+$d] =
-                    ($verts[$a+$d] + $verts[$b+$d]) * .5 +
-                    ($verts[$a+$d] - $verts[$b+$d]) * .5 * $c / DIST),
+        $constraints.map(([$a,$b,$length]) =>
+            [0,1,2].map($c =>
+                $verts[$a+$c] =
+                    ($verts[$a+$c] + $verts[$b+$c]) * .5 +
+                    ($verts[$a+$c] - $verts[$b+$c]) * .5 * $length / DIST),
         )
-    ),
+    ,
 
     g.clear(16640), // g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT
 
