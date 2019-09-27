@@ -52,7 +52,7 @@ g.clearColor($time=0,0,0,1),
 
 setInterval($a => (
 
-    ++$time>99 && 
+    ++$time>396 && 
 
         // Vertex position and velocity updates
         $verts.map(($a,$b) => (
@@ -94,7 +94,7 @@ setInterval($a => (
         g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
-    g.uniform2f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<99?$time:99),
+    g.uniform2f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<396?$time:396),
 
     g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
     g.bufferData($a, Int16Array.from($tris), $a + 81),
