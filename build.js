@@ -4,7 +4,6 @@ const _ = require('lodash');
 
 const SRC_DIR = 'src';
 const DO_SECOND_PASS = false;
-const FRAG_PREFIX = ''; // '#extension GL_OES_standard_derivatives:enable\\n';
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
@@ -75,12 +74,7 @@ const getMinifiedShader = path => {
 const insertShaders = js => {
     while (js.indexOf('__shader(') >= 0) {
         const match = js.match(/__shader\(['"]([^'"]+)['"]\)/);
-        let shader = getMinifiedShader(SRC_DIR + '/' + match[1]);
-
-        if (match[1].endsWith('frag')) {
-            shader = FRAG_PREFIX + shader;
-        }
-
+        const shader = getMinifiedShader(SRC_DIR + '/' + match[1]);
         js = js.replace(/__shader\(['"][^'"]+['"]\)/, "'"+shader+"'");
     }
     
@@ -90,9 +84,10 @@ const insertShaders = js => {
 const removeWhitespace = js => js
     .replace(/[ \t\r\n]+/g, '')
     .replace(/return/g, 'return ')
+    .replace(/let/g, 'let ')
     .replace(/newDate/g, 'new Date');
 
-const afterPackingTransform = js => {
+const removeGLContextPrefix = js => {
     js = js.trim();
     js = js.replace(/g\./g, '');
     return js;
@@ -106,11 +101,10 @@ const main = () => {
     js = removeWhitespace(js);
     js = insertShaders(js);
     js = minifyPrefixedIdentifiers('\\$', js);
-    js = minifyPrefixedIdentifiers('x_', js);
 
     fs.writeFileSync('tmp_in.js', js);
 
-    console.log('Initial packing step:');
+    console.log('Packing...');
     shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g,a tmp_in.js > tmp_out.js');
     console.log('');
 
@@ -122,13 +116,13 @@ const main = () => {
     const unpackedJS = fs.readFileSync('tmp_out.js', 'utf8');
 
     if (DO_SECOND_PASS) {
-        packedJS = afterPackingTransform(unpackedJS);
+        packedJS = removeGLContextPrefix(unpackedJS);
         fs.writeFileSync('tmp_in.js', packedJS);
 
         console.log(packedJS);
         console.log('');
 
-        console.log('Second packing step:');
+        console.log('Second pass (removing "g." prefixes)...');
         shell.exec('regpack --varsNotReassigned g,a tmp_in.js > tmp_out.js');
         console.log('');
 

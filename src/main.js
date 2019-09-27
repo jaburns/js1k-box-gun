@@ -25,6 +25,7 @@ for (
 
 $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .2*Math.random()-.1 : $a),
 
+
 // ===== Shader compilation and WebGL setup =====
 
 g.enable(g.DEPTH_TEST),
@@ -35,21 +36,21 @@ $b = g.createShader(g.VERTEX_SHADER),
 g.shaderSource($b, $a),
 g.compileShader($b),
 g.attachShader($shader, $b),
-//console.log(g.getShaderInfoLog($b));
+//console.log(g.getShaderInfoLog($b)),
 
 $a = __shader('shader.frag'),
 $b = g.createShader(g.FRAGMENT_SHADER),
 g.shaderSource($b, $a),
 g.compileShader($b),
 g.attachShader($shader, $b),
-//console.log(g.getShaderInfoLog($b));
+//console.log(g.getShaderInfoLog($b)),
 
 g.linkProgram($shader),
 g.clearColor($time=0,0,0,1),
 
 // ===== Main loop =====
 
-setInterval(_ => (
+setInterval($a => (
 
     ++$time>99 && 
 
@@ -93,7 +94,7 @@ setInterval(_ => (
         g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
-    g.uniform1f(g.getUniformLocation($shader, 'x_aspect'), a.width/a.height),
+    g.uniform1f(g.getUniformLocation($shader, 'g'), a.width/a.height),
 
     g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
     g.bufferData($a, Int16Array.from($tris), $a + 81),
