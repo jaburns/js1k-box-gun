@@ -25,7 +25,6 @@ for (
 
 $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .6*Math.random()-.3 : $a),
 
-// $shuffle = (a,m,i)=>{m=a.length;while(m)[a[m],a[i]]=[a[i=~~(Math.random()*m--)],a[m]]},
 
 // ===== Shader compilation and WebGL setup =====
 
@@ -53,29 +52,29 @@ g.clearColor($time=0,0,0,1),
 
 setInterval($a => (
 
-//  $shuffle($constraints),
+    // Shuffle constraints to kill biases
+    $constraints.map(($a, $b) => (
+        $a = ~~(Math.random()*8400), // $constraints.length = 8400
+        [$constraints[$a], $constraints[$b]] = [$constraints[$b], $constraints[$a]]
+    )),
 
     ++$time>99 && 
 
         // Vertex position and velocity updates
         $verts.map(($a,$b) => (
-            $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-3), //  $a>1 ? 2e-3 : 0),
+            $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-3),
             $oldVerts[$b] = $a,
-
-            // TODO Try and find a way of applying friction that doesn't cause the boxes to slide
-            // around the floor when they've settled. Preferably without clamping out gravity like
-            // how it's currently working.
 
             // If the vertex is through the floor
             $b%3^1 || $verts[$b] < 0 && (
-                // Restore position and reflect velocity
+                // Restore position and reflect y velocity
                 $verts[$b] = 0,
                 $oldVerts[$b] *= $c = -1,
 
-                // Apply friction along xz 
-                $oldVerts[$b+$c] = .8*($oldVerts[$b+$c] - $verts[$b+$c]) + $verts[$b+$c],
+                // Zero out velocity along xz plane for friction
+                $oldVerts[$b+$c] = $verts[$b+$c],
                 $c *= -1,
-                $oldVerts[$b+$c] = .8*($oldVerts[$b+$c] - $verts[$b+$c]) + $verts[$b+$c]
+                $oldVerts[$b+$c] = $verts[$b+$c]
             )
         ))
 
