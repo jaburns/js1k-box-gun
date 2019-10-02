@@ -8,6 +8,9 @@ $constraints = [],
 $tris = [...'012123'],
 $verts = [...'040840048848'].map($c => $c*99-396);
 
+
+// TODO Figure out why there are references to out-of-range vertices in the tris array.
+
 for (
     $a = $b = $c = $d = 12;
     $c < 3612; // $verts.length = 3612
@@ -23,7 +26,9 @@ for (
     ),
     $d += 8;
 
-$oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .2*Math.random()-.1 : $a),
+$oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .6*Math.random()-.3 : $a),
+
+// $shuffle = (a,m,i)=>{m=a.length;while(m)[a[m],a[i]]=[a[i=~~(Math.random()*m--)],a[m]]},
 
 
 // ===== Shader compilation and WebGL setup =====
@@ -52,12 +57,18 @@ g.clearColor($time=0,0,0,1),
 
 setInterval($a => (
 
-    ++$time>396 && 
+//  $shuffle($constraints),
+
+    ++$time>99 && 
 
         // Vertex position and velocity updates
         $verts.map(($a,$b) => (
-            $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-4),
+            $verts[$b] += $a - $oldVerts[$b] - ($b%3^1 ? 0 : 2e-3), //  $a>1 ? 2e-3 : 0),
             $oldVerts[$b] = $a,
+
+            // TODO Try and find a way of applying friction that doesn't cause the boxes to slide
+            // around the floor when they've settled. Preferably without clamping out gravity like
+            // how it's currently working.
 
             // If the vertex is through the floor
             $b%3^1 || $verts[$b] < 0 && (
@@ -94,10 +105,10 @@ setInterval($a => (
         g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
-    g.uniform2f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<396?$time:396),
+    g.uniform2f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<99?$time:99),
 
     g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
     g.bufferData($a, Int16Array.from($tris), $a + 81),
     g.drawElements(g.TRIANGLES, 5406, g.UNSIGNED_SHORT, 0) // $tris.length = 5406
 
-), 5)
+), 16)
