@@ -8,9 +8,6 @@ $constraints = [],
 $tris = [...'012123'],
 $verts = [...'040840048848'].map($c => $c*99-396);
 
-
-// TODO Figure out why there are references to out-of-range vertices in the tris array.
-
 for (
     $a = $b = $c = $d = 12;
     $c < 3612; // $verts.length = 3612
@@ -18,7 +15,7 @@ for (
 )
     $d < 1220 && ( // 150 (cube count) * 8 (verts per cube) + 20 (iteration offset)
         $verts = $verts.concat([...'080180090190081181091191'].map($c => ~~$c)),
-        $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 16))
+        $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 8))
     ),
     $a ^ $b && (
         $constraints.push([$b, $a, DIST]),
@@ -29,7 +26,6 @@ for (
 $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .6*Math.random()-.3 : $a),
 
 // $shuffle = (a,m,i)=>{m=a.length;while(m)[a[m],a[i]]=[a[i=~~(Math.random()*m--)],a[m]]},
-
 
 // ===== Shader compilation and WebGL setup =====
 
