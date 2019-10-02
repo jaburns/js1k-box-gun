@@ -52,7 +52,7 @@ g.clearColor($time=0,0,0,1),
 
 setInterval($a => (
 
-    ++$time>396 &&
+    ++$time>396 && 
 
         // Vertex position and velocity updates
         $verts.map(($a,$b) => (
@@ -65,7 +65,7 @@ setInterval($a => (
                 $verts[$b] = 0,
                 $oldVerts[$b] *= $c = -1,
 
-                // Apply friction along xz
+                // Apply friction along xz 
                 $oldVerts[$b+$c] = .8*($oldVerts[$b+$c] - $verts[$b+$c]) + $verts[$b+$c],
                 $c *= -1,
                 $oldVerts[$b+$c] = .8*($oldVerts[$b+$c] - $verts[$b+$c]) + $verts[$b+$c]
@@ -90,7 +90,7 @@ setInterval($a => (
     g.vertexAttribPointer(
         0, 3, g.FLOAT,
         g.enableVertexAttribArray(g.useProgram($shader)), // false,
-        g.bindBuffer($a, g.createBuffer()), // 0,
+        g.bindBuffer($a, g.createBuffer()), // 0, 
         g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
