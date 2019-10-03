@@ -2,6 +2,18 @@ __defMacro('DIST',
     Math.hypot(...[0,1,2].map($c => $verts[$a+$c]-$verts[$b+$c]))
 )
 
+// Cube count: 150
+
+__defMacro('INIT_LOOP_LEN',
+    1220 // cube count * 8 + 20
+)
+__defMacro('VERTS_LENGTH',
+    3612 // cube count * 24 + 12
+)
+__defMacro('TRIS_LENGTH',
+    5406 // cube count * 36 + 6
+)
+
 // ===== Shader compilation and WebGL setup =====
 
 g.enable(g.DEPTH_TEST),
@@ -36,10 +48,10 @@ setInterval($c => {
             $verts = [...'040840048848'].map($c => $c*99-396),
 
             $a = $b = $c = $d = 12;
-            $c < 3612; // $verts.length = 3612
+            $c < VERTS_LENGTH;
             ($a += 3) >= $c + 24 && ($a = $b += 3) >= $c + 24 && ($b = $c += 24)
         )
-            $d < 1220 && ( // 150 (cube count) * 8 (verts per cube) + 20 (iteration offset)
+            $d < INIT_LOOP_LEN && (
                 $verts = $verts.concat([...'080180090190081181091191'].map($c => ~~$c)),
                 $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 8))
             ),
@@ -103,6 +115,6 @@ setInterval($c => {
 
     g.uniform3f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<50?50-$time:0, 0),
 
-    g.drawElements(g.TRIANGLES, 5406, g.UNSIGNED_SHORT, 0) // $tris.length = 5406
+    g.drawElements(g.TRIANGLES, TRIS_LENGTH, g.UNSIGNED_SHORT, 0)
 
 }, 16)
