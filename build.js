@@ -98,7 +98,17 @@ const main = () => {
     fs.writeFileSync('tmp_in.js', js);
 
     console.log('Packing...');
-    shell.exec('regpack --contextType 1 --hashWebGLContext true --contextVariableName g --varsNotReassigned g,a tmp_in.js > tmp_out.js');
+    shell.exec('regpack '+
+        '--contextType 1 '+
+        '--crushGainFactor 1 '+
+        '--crushLengthFactor 0 '+
+        '--crushCopiesFactor 0 '+
+        '--crushTiebreakerFactor 0 '+
+        '--hashWebGLContext true '+
+        '--contextVariableName g '+
+        '--varsNotReassigned g,a '+
+        'tmp_in.js > tmp_out.js'
+    );
     console.log('');
 
     let packedJS = fs.readFileSync('tmp_out.js', 'utf8');
