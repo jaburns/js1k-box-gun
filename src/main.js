@@ -41,28 +41,27 @@ g.clearColor($time=0,0,0,1),
 setInterval($c => {
 
     // Geometry and constraints initialization
-    if (!$time++) {
+    if (!$time++)
         for (
             $constraints = [],
             $tris = [...'012123'],
             $verts = [...'040840048848'].map($c => $c*99-396),
-
             $a = $b = $c = $d = 12;
+
             $c < VERTS_LENGTH;
+
             ($a += 3) >= $c + 24 && ($a = $b += 3) >= $c + 24 && ($b = $c += 24)
         )
             $d < INIT_LOOP_LENGTH && (
                 $verts = $verts.concat([...'080180090190081181091191'].map($c => ~~$c)),
-                $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 8))
+                $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 8)),
+                $oldVerts = $verts.map(($a,$b) => $b < 12 ? $a : $a + .6*Math.random()-.3)
             ),
             $a ^ $b && (
                 $constraints.push([$b, $a, DIST]),
                 $constraints.push([$a, $b, DIST])
             ),
             $d += 8;
-
-        $oldVerts = $verts.map(($a,$b) => $b < 12 ? $a : $a + .6*Math.random()-.3)
-    }
 
     $time %= 540,
 
@@ -91,11 +90,11 @@ setInterval($c => {
         &&
 
         // Apply all distance constraints
-        $constraints.map(([$a,$b,$length]) =>
+        $constraints.map(([$a,$b,$d]) =>
             [0,1,2].map($c =>
                 $verts[$a+$c] =
                     ($verts[$a+$c] + $verts[$b+$c]) * .5 +
-                    ($verts[$a+$c] - $verts[$b+$c]) * .5 * $length / DIST),
+                    ($verts[$a+$c] - $verts[$b+$c]) * .5 * $d / DIST),
         )
     ,
 
