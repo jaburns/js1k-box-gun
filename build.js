@@ -3,7 +3,6 @@ const fs = require('fs');
 const _ = require('lodash');
 
 const SRC_DIR = 'src';
-const DO_SECOND_PASS = false;
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
@@ -87,12 +86,6 @@ const removeWhitespace = js => js
     .replace(/let/g, 'let ')
     .replace(/newDate/g, 'new Date');
 
-const removeGLContextPrefix = js => {
-    js = js.trim();
-    js = js.replace(/g\./g, '');
-    return js;
-};
-
 const main = () => {
     let js = fs.readFileSync(SRC_DIR + '/main.js', 'utf8');
 
@@ -112,25 +105,10 @@ const main = () => {
 
     fs.writeFileSync('tmp_in.js', packedJS.replace('eval(_)', 'console.log(_)'));
     shell.exec('node tmp_in.js > tmp_out.js');
-
     const unpackedJS = fs.readFileSync('tmp_out.js', 'utf8');
 
-    if (DO_SECOND_PASS) {
-        packedJS = removeGLContextPrefix(unpackedJS);
-        fs.writeFileSync('tmp_in.js', packedJS);
-
-        console.log(packedJS);
-        console.log('');
-
-        console.log('Second pass (removing "g." prefixes)...');
-        shell.exec('regpack --varsNotReassigned g,a tmp_in.js > tmp_out.js');
-        console.log('');
-
-        packedJS = fs.readFileSync('tmp_out.js', 'utf8');
-    } else {
-        console.log(unpackedJS);
-        console.log('');
-    }
+    console.log(unpackedJS);
+    console.log('');
 
     const shimHTML = fs.readFileSync(SRC_DIR + '/shim.html', 'utf8');
 
