@@ -22,41 +22,39 @@ g.attachShader($shader, $b),
 //console.log(g.getShaderInfoLog($b)),
 
 g.linkProgram($shader),
-g.clearColor(0,0,0,1),
-
-$topFunc = () => {
-
-    // ===== Geometry and constraints initialization =====
-
-    $time = 0,
-    $constraints = [],
-    $tris = [...'012123'],
-    $verts = [...'040840048848'].map($c => $c*99-396);
-
-    for (
-        $a = $b = $c = $d = 12;
-        $c < 3612; // $verts.length = 3612
-        ($a += 3) >= $c + 24 && ($a = $b += 3) >= $c + 24 && ($b = $c += 24)
-    )
-        $d < 1220 && ( // 150 (cube count) * 8 (verts per cube) + 20 (iteration offset)
-            $verts = $verts.concat([...'080180090190081181091191'].map($c => ~~$c)),
-            $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 8))
-        ),
-        $a ^ $b && (
-            $constraints.push([$b, $a, DIST]),
-            $constraints.push([$a, $b, DIST])
-        ),
-        $d += 8;
-
-    $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .6*Math.random()-.3 : $a)
-
-},
+g.clearColor($time=0,0,0,1),
 
 // ===== Main loop =====
 
-setInterval($a => (
+setInterval($c => {
 
-    ++$time>99 && 
+    // Geometry and constraints initialization
+    if (!$time++) {
+        for (
+            $constraints = [],
+            $tris = [...'012123'],
+            $verts = [...'040840048848'].map($c => $c*99-396),
+
+            $a = $b = $c = $d = 12;
+            $c < 3612; // $verts.length = 3612
+            ($a += 3) >= $c + 24 && ($a = $b += 3) >= $c + 24 && ($b = $c += 24)
+        )
+            $d < 1220 && ( // 150 (cube count) * 8 (verts per cube) + 20 (iteration offset)
+                $verts = $verts.concat([...'080180090190081181091191'].map($c => ~~$c)),
+                $tris = $tris.concat([...'102123456657537513062046405015267732'].map($c => ~~$c + $d - 8))
+            ),
+            $a ^ $b && (
+                $constraints.push([$b, $a, DIST]),
+                $constraints.push([$a, $b, DIST])
+            ),
+            $d += 8;
+
+        $oldVerts = $verts.map(($a,$b) => $b > 11 ? $a + .6*Math.random()-.3 : $a)
+    }
+
+    $time %= 540,
+
+    $time > 50 && 
 
         // Vertex position and velocity updates
         $verts.map(($a,$b) => (
@@ -100,14 +98,11 @@ setInterval($a => (
         g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
-    g.uniform2f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<99?$time:99),
-
     g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
     g.bufferData($a, Int16Array.from($tris), $a + 81),
-    g.drawElements(g.TRIANGLES, 5406, g.UNSIGNED_SHORT, 0), // $tris.length = 5406
 
-    $time > 600 && $topFunc()
+    g.uniform3f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<50?50-$time:0, 0),
 
-), 16),
+    g.drawElements(g.TRIANGLES, 5406, g.UNSIGNED_SHORT, 0) // $tris.length = 5406
 
-$topFunc()
+}, 16)
