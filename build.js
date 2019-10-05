@@ -86,6 +86,15 @@ const removeWhitespace = js => js
     .replace(/let/g, 'let ')
     .replace(/newDate/g, 'new Date');
 
+const addNewlines = (str, lineLength) => {
+    let result = '';
+    while (str.length > 0) {
+        result += str.substring(0, lineLength) + '\n';
+        str = str.substring(lineLength);
+    }
+    return result;
+}
+
 const main = () => {
     let js = fs.readFileSync(SRC_DIR + '/main.js', 'utf8');
 
@@ -117,10 +126,13 @@ const main = () => {
     fs.writeFileSync('docs/final.js', packedJS.substr(0, packedJS.length - 1));
 
     fs.writeFileSync('tmp_in.js', packedJS.replace('eval(_)', 'console.log(_)'));
-    shell.exec('node tmp_in.js > docs/unpacked.js');
-    const unpackedJS = fs.readFileSync('docs/unpacked.js', 'utf8');
+    shell.exec('node tmp_in.js > tmp_out.js');
+    const unpackedJS = fs.readFileSync('tmp_out.js', 'utf8');
+    const unpackedJSwithNewlines = addNewlines(unpackedJS, 100).replace(/'/g, '`');
 
-    console.log(unpackedJS);
+    fs.writeFileSync('docs/unpacked.js', unpackedJSwithNewlines);
+
+    console.log(unpackedJSwithNewlines);
     console.log('');
 
     const shimHTML = fs.readFileSync(SRC_DIR + '/shim.html', 'utf8');
