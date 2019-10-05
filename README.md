@@ -21,3 +21,20 @@ C*=-1,c[A+C]=e[A+C]))))&&b.map(([i,A,l])=>[0,1,2].map(C=>e[i+C]=(e[i+C]+e[A+C])*
 (d)),g.bf(i,g.cu()),g.ba(i,Float32Array.from(e),++i+81)),g.bf(i,g.cu()),g.ba(i,Int16Array.from(h),i+
 81),g.uniform3f(g.goa(d,`g`),a.width/a.height,f<50?50-f:0,0),g.dm(4,3606,5123,0)},16)
 ```
+
+### Building from source
+
+```
+npm install
+npm run pack
+open docs/index.html
+```
+
+The final result is built from the readable source found in `src/`. The build script (`build.js`) performs a few simple transformations to the source before feeding it to the final packing step:
+
+ - Replace all unique tokens that start with `$` with single letters.
+ - Replace macros defined using `__defMacro()` with the verbatim contents of the macro.
+ - Replace instances of `__shader()` with the minified contents of that shader file, as produced by [Shader Minifier](http://www.ctrl-alt-test.fr/glsl-minifier/).
+ - Remove all comments and whitespace. 
+
+Finally, the resulting minified JS code is fed to [RegPack](https://github.com/Siorki/RegPack), and inserted in to the JS1k shim.
