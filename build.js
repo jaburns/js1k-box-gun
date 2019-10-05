@@ -107,15 +107,18 @@ const main = () => {
         '--hashWebGLContext true '+
         '--contextVariableName g '+
         '--varsNotReassigned g,a '+
+        '--useES6 true ' +
         'tmp_in.js > tmp_out.js'
     );
     console.log('');
 
     let packedJS = fs.readFileSync('tmp_out.js', 'utf8');
 
+    fs.writeFileSync('docs/final.js', packedJS.substr(0, packedJS.length - 1));
+
     fs.writeFileSync('tmp_in.js', packedJS.replace('eval(_)', 'console.log(_)'));
-    shell.exec('node tmp_in.js > tmp_out.js');
-    const unpackedJS = fs.readFileSync('tmp_out.js', 'utf8');
+    shell.exec('node tmp_in.js > docs/unpacked.js');
+    const unpackedJS = fs.readFileSync('docs/unpacked.js', 'utf8');
 
     console.log(unpackedJS);
     console.log('');
