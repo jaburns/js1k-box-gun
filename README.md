@@ -33,7 +33,7 @@ open docs/index.html
 The final result is built from the readable source found in `src/`. The build script (`build.js`) performs a few simple transformations to the source before feeding it to the final packing step:
 
  - Replace all unique tokens that start with `$` with single letters.
- - Replace macros defined using `__defMacro()` with the verbatim contents of the macro.
+ - Replace macros defined using `__defMacro()` with the verbatim contents of the macro. This is useful because RegPack will find repetitive chunks of code and replace them with a single byte. Because of this it's often smaller to repeat the same code multiple times than to pull it in to a function and call it that way.
  - Replace instances of `__shader()` with the minified contents of that shader file, as produced by [Shader Minifier](http://www.ctrl-alt-test.fr/glsl-minifier/).
  - Remove all comments and whitespace. 
 
