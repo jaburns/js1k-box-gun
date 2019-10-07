@@ -58,8 +58,7 @@ setInterval($c => {
                 $oldVerts = $verts.map(($a,$b) => $b < 12 ? $a : $a + .6*Math.random()-.3)
             ),
             $a ^ $b && (
-                $constraints.push([$b, $a, DIST]),
-                $constraints.push([$a, $b, DIST])
+                $constraints = $constraints.concat([[$b, $a, DIST], [$a, $b, DIST]])
             ),
             $d += 8;
 
