@@ -5,7 +5,7 @@ Exploding and bouncing cubes in 1023 bytes of JavaScript. This project is built 
 ### [View it live](https://jaburns.github.io/js1k-box-gun/)
 
 ### Final minified source before packing
-``` 
+``` javascript
 for(b in g)g[b[0]+[b[7]]+[b[13]]]=g[b];g.e(2929),d=g.cr(),i=`attribute vec3 A;uniform vec3 g;varying
  highp vec3 C;void main(){gl_Position=(C=A,C.z+=g.y,vec4(C.x/g.x,C.y-5.,19.-C.z,20.-C.z));}`,A=g.ch(
 35633),g.so(A,i),g.cS(A),g.ah(d,A),i=`varying highp vec3 C;void main(){gl_FragColor=vec4(exp(.9-leng
