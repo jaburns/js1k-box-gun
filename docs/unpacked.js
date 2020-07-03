@@ -1,15 +1,2 @@
-for(b in g)g[b[0]+[b[7]]+[b[13]]]=g[b];g.e(2929),d=g.cr(),i=`attribute vec3 A;uniform vec3 g;varying
- highp vec3 C;void main(){gl_Position=(C=A,C.z+=g.y,vec4(C.x/g.x,C.y-5.,19.-C.z,20.-C.z));}`,A=g.ch(
-35633),g.so(A,i),g.cS(A),g.ah(d,A),i=`varying highp vec3 C;void main(){gl_FragColor=vec4(exp(.9-leng
-th(vec3(0,1,2)-.1*C))*vec3(.5,.4+C.z/50.,1),1);}`,A=g.ch(35632),g.so(A,i),g.cS(A),g.ah(d,A),g.lg(d),
-g.cl(f=0,0,0,1),setInterval(C=>{if(!f++)for(b=[],h=[...`012123`],e=[...`040840048848`].map(C=>C*99-3
-96),i=A=C=l=12;C<2412;(i+=3)>=C+24&&(i=A+=3)>=C+24&&(A=C+=24))l<820&&(e=e.concat([...`08018009019008
-1181091191`].map(C=>~~C)),h=h.concat([...`102123456657537513062046405015267732`].map(C=>~~C+l-8)),c=
-e.map((i,A)=>A<12?i:i+.6*Math.random()-.3)),i^A&&(b=b.concat([[A,i,Math.hypot(...[0,1,2].map(C=>e[i+
-C]-e[A+C]))],[i,A,Math.hypot(...[0,1,2].map(C=>e[i+C]-e[A+C]))]])),l+=8;f%=540,f>50&&e.map((i,A)=>(e
-[A]+=i-c[A]-(A%3^1?0:2e-3),c[A]=i,(f<500||A<12)&&(A%3^1||e[A]<0&&(e[A]=0,c[A]*=C=-1,c[A+C]=e[A+C],C*
-=-1,c[A+C]=e[A+C]))))&&b.map(([i,A,l])=>[0,1,2].map(C=>e[i+C]=(e[i+C]+e[A+C])*.5+(e[i+C]-e[A+C])*.5*
-l/Math.hypot(...[0,1,2].map(C=>e[i+C]-e[A+C]))),),g.clear(16640),i=34962,g.vto(0,3,5126,g.eet(g.ur(d
-)),g.bf(i,g.cu()),g.ba(i,Float32Array.from(e),++i+81)),g.bf(i,g.cu()),g.ba(i,Int16Array.from(h),i+81
-),g.uniform3f(g.goa(d,`g`),a.width/a.height,f<50?50-f:0,0),g.dm(4,3606,5123,0)},16)
+for(d in x)x[d[0]+[d[7]]+[d[13]]]=x[d];if(!t){x.e(2929),f=x.cr(),A=`attribute vec3 A;uniform vec3 g;varying highp vec3 C;void main(){gl_Position=(C=A,C.z+=g.y,vec4(C.x/g.x,C.y-5.,19.-C.z,20.-C.z));}`,C=x.ch(35633),x.so(C,A),x.cS(C),x.ah(f,C),A=`varying highp vec3 C;void main(){gl_FragColor=vec4(exp(.9-length(vec3(0,1,2)-.1*C))*vec3(.5,.4+C.z/50.,1),1);}`,C=x.ch(35632),x.so(C,A),x.cS(C),x.ah(f,C),x.lg(f),x.cl(h=0,0,0,1),b=x.cu(),a=x.cu()}if(!h++)for(d=[],i=[...`012123`],g=[...`040840048848`].map(l=>l*99-396),A=C=l=m=12;l<2412;(A+=3)>=l+24&&(A=C+=3)>=l+24&&(C=l+=24))m<820&&(g=g.concat([...`080180090190081181091191`].map(l=>~~l)),i=i.concat([...`102123456657537513062046405015267732`].map(l=>~~l+m-8)),e=g.map((A,C)=>C<12?A:A+.6*Math.random()-.3)),A^C&&(d=d.concat([[C,A,Math.hypot(...[0,1,2].map(l=>g[A+l]-g[C+l]))],[A,C,Math.hypot(...[0,1,2].map(l=>g[A+l]-g[C+l]))]])),m+=8;h%=540,h>50&&g.map((A,C)=>(g[C]+=A-e[C]-(C%3^1?0:2e-3),e[C]=A,(h<500||C<12)&&(C%3^1||g[C]<0&&(g[C]=0,e[C]*=l=-1,e[C+l]=g[C+l],l*=-1,e[C+l]=g[C+l]))))&&d.map(([A,C,m])=>[0,1,2].map(l=>g[A+l]=(g[A+l]+g[C+l])*.5+(g[A+l]-g[C+l])*.5*m/Math.hypot(...[0,1,2].map(l=>g[A+l]-g[C+l]))),),x.clear(16640),A=34962,x.vto(0,3,5126,x.eet(x.ur(f)),x.bf(A,a),x.ba(A,Float32Array.from(g),++A+81)),x.bf(A,b),x.ba(A,Int16Array.from(i),A+81),x.uniform3f(x.goa(f,`g`),c.width/c.height,h<50?50-h:0,0),x.dm(4,3606,5123,0)
 

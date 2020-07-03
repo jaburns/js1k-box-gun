@@ -6,7 +6,7 @@ const SRC_DIR = 'src';
 
 const shortVarNames = _.range(10, 36)
     .map(x => x.toString(36))
-    .filter(x => x !== 'g' && x !== 'a');
+    .filter(x => x !== 'x' && x !== 'c');
 
 const stripComments = js => js
     .replace(/\/\*[^\*]*\*\//g, '')
@@ -114,8 +114,8 @@ const main = () => {
         '--crushCopiesFactor 0 '+
         '--crushTiebreakerFactor 0 '+
         '--hashWebGLContext true '+
-        '--contextVariableName g '+
-        '--varsNotReassigned g,a '+
+        '--contextVariableName x '+
+        '--varsNotReassigned x,c '+
         '--useES6 true ' +
         'tmp_in.js > tmp_out.js'
     );
@@ -128,7 +128,7 @@ const main = () => {
     fs.writeFileSync('tmp_in.js', packedJS.replace('eval(_)', 'console.log(_)'));
     shell.exec('node tmp_in.js > tmp_out.js');
     const unpackedJS = fs.readFileSync('tmp_out.js', 'utf8');
-    const unpackedJSwithNewlines = addNewlines(unpackedJS, 100).replace(/'/g, '`');
+    const unpackedJSwithNewlines = addNewlines(unpackedJS, 10000).replace(/'/g, '`');
 
     fs.writeFileSync('docs/unpacked.js', unpackedJSwithNewlines);
 

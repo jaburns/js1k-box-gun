@@ -16,29 +16,30 @@ __defMacro('TRIS_LENGTH',
 
 // ===== Shader compilation and WebGL setup =====
 
-g.enable(g.DEPTH_TEST),
-$shader = g.createProgram(),
+if(!t){
+    x.enable(x.DEPTH_TEST),
+    $shader = x.createProgram(),
 
-$a = __shader('shader.vert'),
-$b = g.createShader(g.VERTEX_SHADER),
-g.shaderSource($b, $a),
-g.compileShader($b),
-g.attachShader($shader, $b),
-//console.log(g.getShaderInfoLog($b)),
+    $a = __shader('shader.vert'),
+    $b = x.createShader(x.VERTEX_SHADER),
+    x.shaderSource($b, $a),
+    x.compileShader($b),
+    x.attachShader($shader, $b),
+    //console.log(g.getShaderInfoLog($b)),
 
-$a = __shader('shader.frag'),
-$b = g.createShader(g.FRAGMENT_SHADER),
-g.shaderSource($b, $a),
-g.compileShader($b),
-g.attachShader($shader, $b),
-//console.log(g.getShaderInfoLog($b)),
+    $a = __shader('shader.frag'),
+    $b = x.createShader(x.FRAGMENT_SHADER),
+    x.shaderSource($b, $a),
+    x.compileShader($b),
+    x.attachShader($shader, $b),
+    //console.log(g.getShaderInfoLog($b)),
 
-g.linkProgram($shader),
-g.clearColor($time=0,0,0,1),
+    x.linkProgram($shader),
+    x.clearColor($time=0,0,0,1),
 
-// ===== Main loop =====
-
-setInterval($c => {
+    $indexBuffer = x.createBuffer(),
+    $vertexBuffer = x.createBuffer()
+}
 
     // Geometry and constraints initialization
     if (!$time++)
@@ -97,22 +98,20 @@ setInterval($c => {
         )
     ,
 
-    g.clear(16640), // g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT
+    x.clear(16640), // g.COLOR_BUFFER_BIT | g.DEPTH_BUFFER_BIT
 
-    $a = g.ARRAY_BUFFER,
+    $a = x.ARRAY_BUFFER,
 
-    g.vertexAttribPointer(
-        0, 3, g.FLOAT,
-        g.enableVertexAttribArray(g.useProgram($shader)), // false,
-        g.bindBuffer($a, g.createBuffer()), // 0, 
-        g.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
+    x.vertexAttribPointer(
+        0, 3, x.FLOAT,
+        x.enableVertexAttribArray(x.useProgram($shader)), // false,
+        x.bindBuffer($a, $vertexBuffer), // 0, 
+        x.bufferData($a, Float32Array.from($verts), ++$a + 81) // 0, // g.ARRAY_BUFFER + 82 = g.STATIC_DRAW
     ),
 
-    g.bindBuffer($a, g.createBuffer()), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
-    g.bufferData($a, Int16Array.from($tris), $a + 81),
+    x.bindBuffer($a, $indexBuffer), // g.ARRAY_BUFFER + 1 = g.ELEMENT_ARRAY_BUFFER
+    x.bufferData($a, Int16Array.from($tris), $a + 81),
 
-    g.uniform3f(g.getUniformLocation($shader, 'g'), a.width/a.height, $time<50?50-$time:0, 0),
+    x.uniform3f(x.getUniformLocation($shader, 'g'), c.width/c.height, $time<50?50-$time:0, 0),
 
-    g.drawElements(g.TRIANGLES, TRIS_LENGTH, g.UNSIGNED_SHORT, 0)
-
-}, 16)
+    x.drawElements(x.TRIANGLES, TRIS_LENGTH, x.UNSIGNED_SHORT, 0)
